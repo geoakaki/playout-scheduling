@@ -1,0 +1,351 @@
+================================================================================
+                    MAGTI VIDEO STORAGE STRUCTURE ANALYSIS
+================================================================================
+Server: 192.168.238.162 (App Server)
+Path: /storage/_Video/
+Date: 2025-12-11
+
+================================================================================
+                        CURRENT DIRECTORY STRUCTURE
+================================================================================
+
+/storage/_Video/
+├── HD/ (High Definition - 1080p)
+│   ├── ADS2/                          - HD Advertisements
+│   ├── HD BUMPERS/                    - HD Channel bumpers/promos
+│   ├── MOVIES TITREBI/                - HD Movie titles/intros
+│   ├── RES/                           - Reserved/Resources
+│   ├── RUS2/                          - Russian dubbed content (main)
+│   ├── RUS2 2015/                     - Russian dubbed (2015)
+│   ├── RUS2 2016/                     - Russian dubbed (2016)
+│   ├── RUS2 2017/                     - Russian dubbed (2017)
+│   ├── RUS2 2019/                     - Russian dubbed (2019)
+│   ├── RUS2 2021/                     - Russian dubbed (2021)
+│   ├── RUS2 2023/                     - Russian dubbed (2023)
+│   ├── RUS2 2025/                     - Russian dubbed (2025)
+│   ├── RUS2 2026/                     - Russian dubbed (2026)
+│   └── TEST/                          - Test files
+│
+└── SD/ (Standard Definition - 720p or lower)
+    ├── ADs/                           - SD Advertisements
+    ├── ENG/                           - English content
+    ├── ENG ANONSEBI/                  - English announcements/promos
+    ├── ENG BUMP/                      - English bumpers
+    ├── GEO/                           - Georgian content (programs)
+    ├── GEO BUMP/                      - Georgian bumpers
+    ├── GEO SHORT AXALI/               - Georgian short clips (new)
+    ├── REKLAMA/                       - Advertising
+    ├── RES/                           - Reserved/Resources
+    ├── SHORTS 2020/                   - Short clips (2020)
+    ├── SHORTS 2024/                   - Short clips (2024)
+    └── TMP/                           - Temporary files
+
+
+================================================================================
+                    CONTENT CATEGORIZATION (CURRENT)
+================================================================================
+
+MAIN CONTENT (Programs/Movies):
+  - HD/RUS2/                - Russian dubbed movies (HD)
+  - HD/RUS2 YYYY/           - Russian dubbed by year
+  - SD/GEO/                 - Georgian programs
+  - SD/ENG/                 - English programs
+
+SUPPORTING CONTENT (Exclude from playlist):
+  - *BUMP*                  - Channel bumpers
+  - *ANONSEBI               - Announcements/promos
+  - ADs/, ADS2/, REKLAMA/   - Advertisements
+  - SHORTS/                 - Short clips
+  - RES/                    - Resources
+  - TMP/                    - Temporary
+  - TEST/                   - Test files
+
+
+================================================================================
+                    ISSUES WITH CURRENT STRUCTURE
+================================================================================
+
+1. ❌ No channel separation - all channels share same directories
+2. ❌ Inconsistent naming (ADs vs ADS2, REKLAMA)
+3. ❌ RUS2 years scattered across multiple folders
+4. ❌ No structure for outsource companies (RUS2, NEO)
+5. ❌ Mix of content types in same level
+6. ❌ No clear separation between shared and channel-specific content
+7. ❌ Hard to manage permissions per channel
+8. ❌ Difficult to add new outsource providers
+
+
+================================================================================
+              RECOMMENDED DIRECTORY STRUCTURE (NEW)
+================================================================================
+
+/storage/_Video/
+│
+├── CHANNELS/                           # Channel-specific content
+│   ├── magti-my/                       # Our Magti (Main channel)
+│   │   ├── HD/
+│   │   │   ├── Movies/                 # HD Movies for this channel
+│   │   │   ├── Series/                 # HD TV Series
+│   │   │   └── Specials/               # Special programs
+│   │   └── SD/
+│   │       ├── Movies/
+│   │       ├── Series/
+│   │       └── Specials/
+│   │
+│   ├── magti-kino/                     # Magti Kino (Movie channel)
+│   │   ├── HD/
+│   │   │   ├── Movies/
+│   │   │   ├── Series/
+│   │   │   └── Specials/
+│   │   └── SD/
+│   │       ├── Movies/
+│   │       ├── Series/
+│   │       └── Specials/
+│   │
+│   └── magti-hit/                      # Magti Hit (Hits channel)
+│       ├── HD/
+│       │   ├── Movies/
+│       │   ├── Series/
+│       │   └── Specials/
+│       └── SD/
+│           ├── Movies/
+│           ├── Series/
+│           └── Specials/
+│
+├── COMMON/                             # Shared content across channels
+│   ├── Ads/                            # Advertisements
+│   │   ├── HD/
+│   │   │   ├── 2024/
+│   │   │   ├── 2025/
+│   │   │   └── Active/                 # Currently active ads
+│   │   └── SD/
+│   │       ├── 2024/
+│   │       ├── 2025/
+│   │       └── Active/
+│   │
+│   ├── Bumpers/                        # Channel bumpers/idents
+│   │   ├── magti-my/
+│   │   │   ├── HD/
+│   │   │   └── SD/
+│   │   ├── magti-kino/
+│   │   │   ├── HD/
+│   │   │   └── SD/
+│   │   └── magti-hit/
+│   │       ├── HD/
+│   │       └── SD/
+│   │
+│   ├── Promos/                         # Promotional content
+│   │   ├── HD/
+│   │   └── SD/
+│   │
+│   ├── Titles/                         # Movie titles/intros
+│   │   ├── HD/
+│   │   └── SD/
+│   │
+│   └── Shorts/                         # Short-form content
+│       ├── HD/
+│       └── SD/
+│
+├── PROVIDERS/                          # Outsource content providers
+│   ├── RUS2/                           # Russian dubbing studio
+│   │   ├── Incoming/                   # New deliveries
+│   │   │   └── YYYY-MM-DD/            # By delivery date
+│   │   ├── Processing/                 # Being processed/QC
+│   │   ├── Ready/                      # Ready for air
+│   │   │   ├── HD/
+│   │   │   │   ├── 2024/
+│   │   │   │   ├── 2025/
+│   │   │   │   └── 2026/
+│   │   │   └── SD/
+│   │   │       ├── 2024/
+│   │   │       ├── 2025/
+│   │   │       └── 2026/
+│   │   └── Archive/                    # Old/completed
+│   │
+│   ├── NEO/                            # NEO dubbing studio
+│   │   ├── Incoming/
+│   │   ├── Processing/
+│   │   ├── Ready/
+│   │   │   ├── HD/
+│   │   │   └── SD/
+│   │   └── Archive/
+│   │
+│   └── CUSTOM/                         # Placeholder for future providers
+│       ├── Incoming/
+│       ├── Processing/
+│       ├── Ready/
+│       └── Archive/
+│
+├── LANGUAGES/                          # Content organized by language
+│   ├── Georgian/                       # GEO content
+│   │   ├── HD/
+│   │   │   ├── Movies/
+│   │   │   ├── Series/
+│   │   │   └── Documentaries/
+│   │   └── SD/
+│   │       ├── Movies/
+│   │       ├── Series/
+│   │       └── Documentaries/
+│   │
+│   ├── English/                        # ENG content
+│   │   ├── HD/
+│   │   │   ├── Movies/
+│   │   │   ├── Series/
+│   │   │   └── Documentaries/
+│   │   └── SD/
+│   │       ├── Movies/
+│   │       ├── Series/
+│   │       └── Documentaries/
+│   │
+│   └── Russian/                        # RUS content
+│       ├── HD/
+│       │   ├── Movies/
+│       │   ├── Series/
+│       │   └── Documentaries/
+│       └── SD/
+│           ├── Movies/
+│           ├── Series/
+│           └── Documentaries/
+│
+├── LIBRARY/                            # Master content library
+│   ├── Movies/
+│   │   ├── HD/
+│   │   │   ├── Action/
+│   │   │   ├── Comedy/
+│   │   │   ├── Drama/
+│   │   │   └── [other genres]/
+│   │   └── SD/
+│   │       └── [same structure]/
+│   │
+│   ├── Series/
+│   │   ├── HD/
+│   │   └── SD/
+│   │
+│   └── Documentaries/
+│       ├── HD/
+│       └── SD/
+│
+├── WORK/                               # Working directories
+│   ├── Incoming/                       # New uploads
+│   ├── Processing/                     # Being processed
+│   │   ├── Transcoding/
+│   │   ├── QC/                         # Quality Control
+│   │   └── Metadata/
+│   ├── Ready/                          # Ready for playout
+│   └── Temp/                           # Temporary files
+│
+└── ARCHIVE/                            # Archive/backup
+    ├── 2023/
+    ├── 2024/
+    └── 2025/
+
+
+================================================================================
+                         STRUCTURE BENEFITS
+================================================================================
+
+✅ CHANNEL SEPARATION
+   - Each channel has its own directory
+   - Easy to manage permissions per channel
+   - Clear ownership and responsibility
+
+✅ SHARED RESOURCES
+   - Common content (ads, bumpers) in one place
+   - No duplication
+   - Centralized management
+
+✅ PROVIDER MANAGEMENT
+   - Clear workflow: Incoming → Processing → Ready → Archive
+   - Easy to add new providers
+   - Track delivery status
+
+✅ LANGUAGE ORGANIZATION
+   - Content organized by language
+   - Easy to find content for specific audience
+   - Supports multilingual channels
+
+✅ FLEXIBILITY
+   - CUSTOM/ directories for future needs
+   - Scalable structure
+   - Easy to extend
+
+✅ WORKFLOW SUPPORT
+   - WORK/ directory for production pipeline
+   - Clear processing states
+   - Quality control integration
+
+
+================================================================================
+                    MIGRATION MAPPING (OLD → NEW)
+================================================================================
+
+OLD LOCATION                          →  NEW LOCATION
+─────────────────────────────────────────────────────────────────────────────
+HD/RUS2/                              →  PROVIDERS/RUS2/Ready/HD/
+HD/RUS2 2025/                         →  PROVIDERS/RUS2/Ready/HD/2025/
+SD/GEO/                               →  LANGUAGES/Georgian/SD/Movies/
+SD/ENG/                               →  LANGUAGES/English/SD/Movies/
+HD/ADS2/                              →  COMMON/Ads/HD/Active/
+SD/ADs/                               →  COMMON/Ads/SD/Active/
+HD/HD BUMPERS/                        →  COMMON/Bumpers/[channel]/HD/
+SD/GEO BUMP/                          →  COMMON/Bumpers/[channel]/SD/
+HD/MOVIES TITREBI/                    →  COMMON/Titles/HD/
+SD/SHORTS 2024/                       →  COMMON/Shorts/SD/
+SD/TMP/                               →  WORK/Temp/
+HD/TEST/                              →  WORK/Temp/
+
+
+================================================================================
+                        IMPLEMENTATION NOTES
+================================================================================
+
+1. PHASED MIGRATION
+   - Migrate in phases to avoid disruption
+   - Start with new content, gradually move old
+   - Keep old structure until migration complete
+
+2. SYMLINKS DURING TRANSITION
+   - Create symlinks from old to new locations
+   - Maintain backward compatibility
+   - Remove after full migration
+
+3. AUTOMATION
+   - Update playout system paths
+   - Update parser to handle new structure
+   - Automate content organization
+
+4. DOCUMENTATION
+   - Document file naming conventions
+   - Create content ingestion guidelines
+   - Train staff on new structure
+
+5. PERMISSIONS
+   - Set appropriate permissions per directory
+   - Restrict provider access to their folders
+   - Audit access regularly
+
+
+================================================================================
+                        RECOMMENDED FILE NAMING
+================================================================================
+
+MOVIES:
+  [Title]_[Year]_[Language]_[Provider]_[FileCode].[ext]
+  Example: Godzilla_2014_RUS_RUS2_1049A.mov
+
+SERIES:
+  [Title]_S[NN]E[NN]_[Language]_[Provider]_[FileCode].[ext]
+  Example: Friends_S01E01_ENG_NEO_2345A.mov
+
+ADS:
+  [Brand]_[Campaign]_[Duration]_[Language]_[ValidUntil].[ext]
+  Example: Magti_5G_30sec_GEO_2025-12-31.mov
+
+BUMPERS:
+  [Channel]_[Type]_[Duration]_[Language].[ext]
+  Example: magti-hit_Ident_5sec_GEO.mov
+
+
+================================================================================
+                              END OF DOCUMENT
+================================================================================
