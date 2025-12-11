@@ -224,10 +224,10 @@
 
 | Directory | Mount Point | Server | Access | Purpose |
 |-----------|-------------|--------|--------|---------|
-| **CHANNELS/** | Local | `192.168.238.162` (App Server) | Internal | Channel-specific content (magti-my, magti-kino, magti-hit) |
-| **COMMON/** | Local | `192.168.238.162` (App Server) | Internal | Shared resources (Ads, Bumpers, Promos, Titles, Shorts) |
+| **CHANNELS/** | Local | App Server | Internal | Channel-specific content (magti-my, magti-kino, magti-hit) |
+| **COMMON/** | Local | App Server | Internal | Shared resources (Ads, Bumpers, Promos, Titles, Shorts) |
 | **PROVIDERS/** | **Remote Mount** | **Public-facing server** | **Public Internet** | **Content upload/download for external providers (RUS2, NEO). Playlist source.** |
-| **WORK/** | Local | `192.168.238.162` (App Server) | Internal | Working directories, processing, library, and custom content staging |
+| **WORK/** | Local | App Server | Internal | Working directories, processing, library, and custom content staging |
 | **ARCHIVE/** | **Remote Mount** | **Archive Server** | **Internal** | **Long-term storage and backup** |
 
 ### Mount Details
@@ -253,7 +253,7 @@
 - **Retention:** Organized by year (2023/, 2024/, 2025/)
 
 #### Local Directories (App Server)
-All other directories (`CHANNELS/`, `COMMON/`, `WORK/`) are stored locally on the App Server (`192.168.238.162`) for fast access and playout operations.
+All other directories (`CHANNELS/`, `COMMON/`, `WORK/`) are stored locally on the App Server for fast access and playout operations.
 
 **WORK/** directory includes:
 - Content processing workflows (Incoming, Processing, Ready, Temp)
