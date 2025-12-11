@@ -12,6 +12,7 @@
 - [Content Categorization](#content-categorization)
 - [Issues with Current Structure](#issues-with-current-structure)
 - [Recommended Directory Structure](#recommended-directory-structure)
+- [Storage Architecture Matrix](#storage-architecture-matrix)
 - [Structure Benefits](#structure-benefits)
 - [Migration Mapping](#migration-mapping)
 - [Implementation Notes](#implementation-notes)
@@ -238,6 +239,44 @@
     ├── 2024/
     └── 2025/
 ```
+
+---
+
+## Storage Architecture Matrix
+
+| Directory | Mount Point | Server | Access | Purpose |
+|-----------|-------------|--------|--------|---------|
+| **CHANNELS/** | Local | `192.168.238.162` (App Server) | Internal | Channel-specific content, symlinks to PROVIDERS |
+| **COMMON/** | Local | `192.168.238.162` (App Server) | Internal | Shared resources (Ads, Bumpers, Promos, Titles, Shorts) |
+| **PROVIDERS/** | **Remote Mount** | **Public-facing server** | **Public Internet** | **Content upload/download for external providers (RUS2, NEO, GEO). Playlist source.** |
+| **LIBRARY/** | Local | `192.168.238.162` (App Server) | Internal | Master content library organized by genre |
+| **WORK/** | Local | `192.168.238.162` (App Server) | Internal | Working directories for content processing |
+| **ARCHIVE/** | **Remote Mount** | **Archive Server** | **Internal** | **Long-term storage and backup** |
+
+### Mount Details
+
+#### PROVIDERS Directory
+- **Mount Type:** Remote filesystem (NFS/SMBFS/FTP)
+- **Source Server:** Public-facing upload server (accessible from Internet)
+- **Access Control:** Provider-specific credentials (RUS2, NEO, GEO each have their own subdirectory)
+- **Purpose:**
+  - External providers upload content here
+  - Workflow: `Incoming/` → `Processing/` → `Ready/` → `Archive/`
+  - Playlists reference files from `PROVIDERS/[Provider]/Ready/`
+- **Security:** VPN or secure transfer protocols, isolated per provider
+
+#### ARCHIVE Directory
+- **Mount Type:** Remote filesystem (NFS/SMBFS)
+- **Source Server:** Dedicated archive/backup server
+- **Access Control:** Internal only, automated archival processes
+- **Purpose:**
+  - Long-term storage of completed/old content
+  - Backup and disaster recovery
+  - Historical content retention
+- **Retention:** Organized by year (2023/, 2024/, 2025/)
+
+#### Local Directories (App Server)
+All other directories (`CHANNELS/`, `COMMON/`, `LIBRARY/`, `WORK/`) are stored locally on the App Server (`192.168.238.162`) for fast access and playout operations.
 
 ---
 
