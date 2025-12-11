@@ -179,60 +179,38 @@
 │   │   │       └── 2026/
 │   │   └── Archive/                    # Old/completed
 │   │
-│   ├── NEO/                            # NEO dubbing studio
-│   │   ├── Incoming/
-│   │   ├── Processing/
-│   │   ├── Ready/                      # Ready for air (PLAYLIST SOURCE)
-│   │   │   ├── HD/
-│   │   │   └── SD/
-│   │   └── Archive/
-│   │
-│   ├── GEO/                            # Georgian content provider (magti-my)
-│   │   ├── Incoming/
-│   │   ├── Processing/
-│   │   ├── Ready/                      # Ready for air (PLAYLIST SOURCE)
-│   │   │   ├── HD/
-│   │   │   │   ├── Movies/
-│   │   │   │   ├── Series/
-│   │   │   │   └── Documentaries/
-│   │   │   └── SD/
-│   │   │       ├── Movies/
-│   │   │       ├── Series/
-│   │   │       └── Documentaries/
-│   │   └── Archive/
-│   │
-│   └── CUSTOM/                         # Placeholder for future providers
+│   └── NEO/                            # NEO dubbing studio
 │       ├── Incoming/
 │       ├── Processing/
-│       ├── Ready/
+│       ├── Ready/                      # Ready for air (PLAYLIST SOURCE)
+│       │   ├── HD/
+│       │   └── SD/
 │       └── Archive/
 │
-├── LIBRARY/                            # Master content library
-│   ├── Movies/
-│   │   ├── HD/
-│   │   │   ├── Action/
-│   │   │   ├── Comedy/
-│   │   │   ├── Drama/
-│   │   │   └── [other genres]/
-│   │   └── SD/
-│   │       └── [same structure]/
-│   │
-│   ├── Series/
-│   │   ├── HD/
-│   │   └── SD/
-│   │
-│   └── Documentaries/
-│       ├── HD/
-│       └── SD/
-│
-├── WORK/                               # Working directories
+├── WORK/                               # Working directories & Library
 │   ├── Incoming/                       # New uploads
 │   ├── Processing/                     # Being processed
 │   │   ├── Transcoding/
 │   │   ├── QC/                         # Quality Control
 │   │   └── Metadata/
 │   ├── Ready/                          # Ready for playout
-│   └── Temp/                           # Temporary files
+│   ├── Temp/                           # Temporary files
+│   ├── Library/                        # Master content library
+│   │   ├── Movies/
+│   │   │   ├── HD/
+│   │   │   │   ├── Action/
+│   │   │   │   ├── Comedy/
+│   │   │   │   ├── Drama/
+│   │   │   │   └── [other genres]/
+│   │   │   └── SD/
+│   │   │       └── [same structure]/
+│   │   ├── Series/
+│   │   │   ├── HD/
+│   │   │   └── SD/
+│   │   └── Documentaries/
+│   │       ├── HD/
+│   │       └── SD/
+│   └── Custom/                         # Custom/future provider staging
 │
 └── ARCHIVE/                            # Archive/backup
     ├── 2023/
@@ -246,11 +224,10 @@
 
 | Directory | Mount Point | Server | Access | Purpose |
 |-----------|-------------|--------|--------|---------|
-| **CHANNELS/** | Local | `192.168.238.162` (App Server) | Internal | Channel-specific content, symlinks to PROVIDERS |
+| **CHANNELS/** | Local | `192.168.238.162` (App Server) | Internal | Channel-specific content (magti-my, magti-kino, magti-hit) |
 | **COMMON/** | Local | `192.168.238.162` (App Server) | Internal | Shared resources (Ads, Bumpers, Promos, Titles, Shorts) |
-| **PROVIDERS/** | **Remote Mount** | **Public-facing server** | **Public Internet** | **Content upload/download for external providers (RUS2, NEO, GEO). Playlist source.** |
-| **LIBRARY/** | Local | `192.168.238.162` (App Server) | Internal | Master content library organized by genre |
-| **WORK/** | Local | `192.168.238.162` (App Server) | Internal | Working directories for content processing |
+| **PROVIDERS/** | **Remote Mount** | **Public-facing server** | **Public Internet** | **Content upload/download for external providers (RUS2, NEO). Playlist source.** |
+| **WORK/** | Local | `192.168.238.162` (App Server) | Internal | Working directories, processing, library, and custom content staging |
 | **ARCHIVE/** | **Remote Mount** | **Archive Server** | **Internal** | **Long-term storage and backup** |
 
 ### Mount Details
@@ -258,7 +235,7 @@
 #### PROVIDERS Directory
 - **Mount Type:** Remote filesystem (NFS/SMBFS/FTP)
 - **Source Server:** Public-facing upload server (accessible from Internet)
-- **Access Control:** Provider-specific credentials (RUS2, NEO, GEO each have their own subdirectory)
+- **Access Control:** Provider-specific credentials (RUS2, NEO each have their own subdirectory)
 - **Purpose:**
   - External providers upload content here
   - Workflow: `Incoming/` → `Processing/` → `Ready/` → `Archive/`
@@ -276,7 +253,12 @@
 - **Retention:** Organized by year (2023/, 2024/, 2025/)
 
 #### Local Directories (App Server)
-All other directories (`CHANNELS/`, `COMMON/`, `LIBRARY/`, `WORK/`) are stored locally on the App Server (`192.168.238.162`) for fast access and playout operations.
+All other directories (`CHANNELS/`, `COMMON/`, `WORK/`) are stored locally on the App Server (`192.168.238.162`) for fast access and playout operations.
+
+**WORK/** directory includes:
+- Content processing workflows (Incoming, Processing, Ready, Temp)
+- Master content library (Library/)
+- Custom content staging (Custom/)
 
 ---
 
@@ -299,16 +281,11 @@ All other directories (`CHANNELS/`, `COMMON/`, `LIBRARY/`, `WORK/`) are stored l
 - Track delivery status
 - Provider name included in directory structure
 
-### ✅ Flexibility
-- `CUSTOM/` directories for future providers
-- `GEO/` provider for Georgian content (magti-my specific)
-- Scalable structure
-- Easy to extend
-
-### ✅ Workflow Support
-- `WORK/` directory for production pipeline
-- Clear processing states
-- Quality control integration
+### ✅ Flexibility & Workflow Support
+- `WORK/` directory combines processing pipeline, library, and custom staging
+- Clear processing states with QC integration
+- `Custom/` subdirectory for future content types
+- Scalable and easy to extend
 
 ---
 
@@ -318,7 +295,7 @@ All other directories (`CHANNELS/`, `COMMON/`, `LIBRARY/`, `WORK/`) are stored l
 |-------------|--------------|
 | `HD/RUS2/` | `PROVIDERS/RUS2/Ready/HD/` |
 | `HD/RUS2 2025/` | `PROVIDERS/RUS2/Ready/HD/2025/` |
-| `SD/GEO/` | `PROVIDERS/GEO/Ready/SD/Movies/` (magti-my) |
+| `SD/GEO/` | `CHANNELS/magti-my/SD/Movies/` |
 | `SD/ENG/` | `PROVIDERS/[Provider]/Ready/SD/Movies/` |
 | `HD/ADS2/` | `COMMON/Ads/HD/Active/` |
 | `SD/ADs/` | `COMMON/Ads/SD/Active/` |
@@ -374,7 +351,7 @@ All other directories (`CHANNELS/`, `COMMON/`, `LIBRARY/`, `WORK/`) are stored l
 
 **Examples:**
 - `Godzilla_2014_RUS_RUS2_1049A.mov` (RUS2 provider)
-- `Georgian_Movie_2024_GEO_GEO_2890A.mov` (GEO provider for magti-my)
+- `Titanic_1997_ENG_NEO_2890A.mov` (NEO provider)
 
 ### Series
 **Format:** `[Title]_S[NN]E[NN]_[Language]_[Provider]_[FileCode].[ext]`
