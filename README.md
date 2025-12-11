@@ -1,4 +1,4 @@
-# Magti Video Storage Structure Analysis
+# Video Storage Structure Analysis
 
 **Server:** `192.168.238.162` (App Server)
 **Path:** `/storage/_Video/`
@@ -96,7 +96,7 @@
 /storage/_Video/
 │
 ├── CHANNELS/                           # Channel-specific content
-│   ├── magti-my/                       # Our Magti (Main channel)
+│   ├── channel-1/                      # Main channel
 │   │   ├── HD/
 │   │   │   ├── Movies/                 # HD Movies for this channel
 │   │   │   ├── Series/                 # HD TV Series
@@ -106,7 +106,7 @@
 │   │       ├── Series/
 │   │       └── Specials/
 │   │
-│   ├── magti-kino/                     # Magti Kino (Movie channel)
+│   ├── channel-2/                      # Movie channel
 │   │   ├── HD/
 │   │   │   ├── Movies/
 │   │   │   ├── Series/
@@ -116,7 +116,7 @@
 │   │       ├── Series/
 │   │       └── Specials/
 │   │
-│   └── magti-hit/                      # Magti Hit (Hits channel)
+│   └── channel-3/                      # Hits channel
 │       ├── HD/
 │       │   ├── Movies/
 │       │   ├── Series/
@@ -138,13 +138,13 @@
 │   │       └── Active/
 │   │
 │   ├── Bumpers/                        # Channel bumpers/idents
-│   │   ├── magti-my/
+│   │   ├── channel-1/
 │   │   │   ├── HD/
 │   │   │   └── SD/
-│   │   ├── magti-kino/
+│   │   ├── channel-2/
 │   │   │   ├── HD/
 │   │   │   └── SD/
-│   │   └── magti-hit/
+│   │   └── channel-3/
 │   │       ├── HD/
 │   │       └── SD/
 │   │
@@ -353,12 +353,12 @@
 ### Ads
 **Format:** `[Brand]_[Campaign]_[Duration]_[Language]_[ValidUntil].[ext]`
 
-**Example:** `Magti_5G_30sec_GEO_2025-12-31.mov`
+**Example:** `Brand_Campaign_30sec_GEO_2025-12-31.mov`
 
 ### Bumpers
 **Format:** `[Channel]_[Type]_[Duration]_[Language].[ext]`
 
-**Example:** `magti-hit_Ident_5sec_GEO.mov`
+**Example:** `channel-3_Ident_5sec_GEO.mov`
 
 ---
 
