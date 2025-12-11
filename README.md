@@ -59,9 +59,9 @@
 ## Content Categorization
 
 ### Main Content (Programs/Movies)
-- `HD/RUS2/` - Russian dubbed movies (HD)
-- `HD/RUS2 YYYY/` - Russian dubbed by year
-- `SD/GEO/` - Georgian programs
+- `HD/RUS2/` - Russian dubbed movies (HD) - Provider: RUS2
+- `HD/RUS2 YYYY/` - Russian dubbed by year - Provider: RUS2
+- `SD/GEO/` - Georgian programs - for magti-my channel
 - `SD/ENG/` - English programs
 
 ### Supporting Content (Exclude from playlist)
@@ -92,11 +92,13 @@
 
 ## Recommended Directory Structure
 
+**Note:** Playlists will reference files from `PROVIDERS/` section. Channel-specific directories can contain symlinks to provider content or channel-exclusive material.
+
 ```
 /storage/_Video/
 │
 ├── CHANNELS/                           # Channel-specific content
-│   ├── channel-1/                      # Main channel
+│   ├── magti-my/                       # Magti My (Main channel - Georgian content)
 │   │   ├── HD/
 │   │   │   ├── Movies/                 # HD Movies for this channel
 │   │   │   ├── Series/                 # HD TV Series
@@ -106,7 +108,7 @@
 │   │       ├── Series/
 │   │       └── Specials/
 │   │
-│   ├── channel-2/                      # Movie channel
+│   ├── magti-kino/                     # Magti Kino (Movie channel)
 │   │   ├── HD/
 │   │   │   ├── Movies/
 │   │   │   ├── Series/
@@ -116,7 +118,7 @@
 │   │       ├── Series/
 │   │       └── Specials/
 │   │
-│   └── channel-3/                      # Hits channel
+│   └── magti-hit/                      # Magti Hit (Hits channel)
 │       ├── HD/
 │       │   ├── Movies/
 │       │   ├── Series/
@@ -138,13 +140,13 @@
 │   │       └── Active/
 │   │
 │   ├── Bumpers/                        # Channel bumpers/idents
-│   │   ├── channel-1/
+│   │   ├── magti-my/
 │   │   │   ├── HD/
 │   │   │   └── SD/
-│   │   ├── channel-2/
+│   │   ├── magti-kino/
 │   │   │   ├── HD/
 │   │   │   └── SD/
-│   │   └── channel-3/
+│   │   └── magti-hit/
 │   │       ├── HD/
 │   │       └── SD/
 │   │
@@ -160,12 +162,12 @@
 │       ├── HD/
 │       └── SD/
 │
-├── PROVIDERS/                          # Outsource content providers
+├── PROVIDERS/                          # Outsource content providers (MAIN PLAYLIST SOURCE)
 │   ├── RUS2/                           # Russian dubbing studio
 │   │   ├── Incoming/                   # New deliveries
 │   │   │   └── YYYY-MM-DD/            # By delivery date
 │   │   ├── Processing/                 # Being processed/QC
-│   │   ├── Ready/                      # Ready for air
+│   │   ├── Ready/                      # Ready for air (PLAYLIST SOURCE)
 │   │   │   ├── HD/
 │   │   │   │   ├── 2024/
 │   │   │   │   ├── 2025/
@@ -179,9 +181,23 @@
 │   ├── NEO/                            # NEO dubbing studio
 │   │   ├── Incoming/
 │   │   ├── Processing/
-│   │   ├── Ready/
+│   │   ├── Ready/                      # Ready for air (PLAYLIST SOURCE)
 │   │   │   ├── HD/
 │   │   │   └── SD/
+│   │   └── Archive/
+│   │
+│   ├── GEO/                            # Georgian content provider (magti-my)
+│   │   ├── Incoming/
+│   │   ├── Processing/
+│   │   ├── Ready/                      # Ready for air (PLAYLIST SOURCE)
+│   │   │   ├── HD/
+│   │   │   │   ├── Movies/
+│   │   │   │   ├── Series/
+│   │   │   │   └── Documentaries/
+│   │   │   └── SD/
+│   │   │       ├── Movies/
+│   │   │       ├── Series/
+│   │   │       └── Documentaries/
 │   │   └── Archive/
 │   │
 │   └── CUSTOM/                         # Placeholder for future providers
@@ -189,37 +205,6 @@
 │       ├── Processing/
 │       ├── Ready/
 │       └── Archive/
-│
-├── LANGUAGES/                          # Content organized by language
-│   ├── Georgian/                       # GEO content
-│   │   ├── HD/
-│   │   │   ├── Movies/
-│   │   │   ├── Series/
-│   │   │   └── Documentaries/
-│   │   └── SD/
-│   │       ├── Movies/
-│   │       ├── Series/
-│   │       └── Documentaries/
-│   │
-│   ├── English/                        # ENG content
-│   │   ├── HD/
-│   │   │   ├── Movies/
-│   │   │   ├── Series/
-│   │   │   └── Documentaries/
-│   │   └── SD/
-│   │       ├── Movies/
-│   │       ├── Series/
-│   │       └── Documentaries/
-│   │
-│   └── Russian/                        # RUS content
-│       ├── HD/
-│       │   ├── Movies/
-│       │   ├── Series/
-│       │   └── Documentaries/
-│       └── SD/
-│           ├── Movies/
-│           ├── Series/
-│           └── Documentaries/
 │
 ├── LIBRARY/                            # Master content library
 │   ├── Movies/
@@ -269,17 +254,15 @@
 - Centralized management
 
 ### ✅ Provider Management
+- **Playlists use files from `PROVIDERS/[Provider]/Ready/`**
 - Clear workflow: **Incoming → Processing → Ready → Archive**
 - Easy to add new providers
 - Track delivery status
-
-### ✅ Language Organization
-- Content organized by language
-- Easy to find content for specific audience
-- Supports multilingual channels
+- Provider name included in directory structure
 
 ### ✅ Flexibility
-- `CUSTOM/` directories for future needs
+- `CUSTOM/` directories for future providers
+- `GEO/` provider for Georgian content (magti-my specific)
 - Scalable structure
 - Easy to extend
 
@@ -296,12 +279,12 @@
 |-------------|--------------|
 | `HD/RUS2/` | `PROVIDERS/RUS2/Ready/HD/` |
 | `HD/RUS2 2025/` | `PROVIDERS/RUS2/Ready/HD/2025/` |
-| `SD/GEO/` | `LANGUAGES/Georgian/SD/Movies/` |
-| `SD/ENG/` | `LANGUAGES/English/SD/Movies/` |
+| `SD/GEO/` | `PROVIDERS/GEO/Ready/SD/Movies/` (magti-my) |
+| `SD/ENG/` | `PROVIDERS/[Provider]/Ready/SD/Movies/` |
 | `HD/ADS2/` | `COMMON/Ads/HD/Active/` |
 | `SD/ADs/` | `COMMON/Ads/SD/Active/` |
 | `HD/HD BUMPERS/` | `COMMON/Bumpers/[channel]/HD/` |
-| `SD/GEO BUMP/` | `COMMON/Bumpers/[channel]/SD/` |
+| `SD/GEO BUMP/` | `COMMON/Bumpers/magti-my/SD/` |
 | `HD/MOVIES TITREBI/` | `COMMON/Titles/HD/` |
 | `SD/SHORTS 2024/` | `COMMON/Shorts/SD/` |
 | `SD/TMP/` | `WORK/Temp/` |
@@ -322,7 +305,7 @@
 - Remove after full migration
 
 ### 3. Automation
-- Update playout system paths
+- Update playout system paths to reference `PROVIDERS/[Provider]/Ready/`
 - Update parser to handle new structure
 - Automate content organization
 
@@ -336,19 +319,30 @@
 - Restrict provider access to their folders
 - Audit access regularly
 
+### 6. Playlist Generation
+- **Playlists reference files from `PROVIDERS/[Provider]/Ready/`**
+- File codes must be included in all media files
+- Provider name embedded in directory path
+
 ---
 
 ## Recommended File Naming
 
+**All files MUST include file codes for database tracking.**
+
 ### Movies
 **Format:** `[Title]_[Year]_[Language]_[Provider]_[FileCode].[ext]`
 
-**Example:** `Godzilla_2014_RUS_RUS2_1049A.mov`
+**Examples:**
+- `Godzilla_2014_RUS_RUS2_1049A.mov` (RUS2 provider)
+- `Georgian_Movie_2024_GEO_GEO_2890A.mov` (GEO provider for magti-my)
 
 ### Series
 **Format:** `[Title]_S[NN]E[NN]_[Language]_[Provider]_[FileCode].[ext]`
 
-**Example:** `Friends_S01E01_ENG_NEO_2345A.mov`
+**Examples:**
+- `Friends_S01E01_ENG_NEO_2345A.mov`
+- `Breaking_Bad_S02E05_RUS_RUS2_1087A.mov`
 
 ### Ads
 **Format:** `[Brand]_[Campaign]_[Duration]_[Language]_[ValidUntil].[ext]`
@@ -358,7 +352,10 @@
 ### Bumpers
 **Format:** `[Channel]_[Type]_[Duration]_[Language].[ext]`
 
-**Example:** `channel-3_Ident_5sec_GEO.mov`
+**Examples:**
+- `magti-hit_Ident_5sec_GEO.mov`
+- `magti-my_Promo_10sec_GEO.mov`
+- `magti-kino_Ident_3sec_GEO.mov`
 
 ---
 
