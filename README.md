@@ -1,14 +1,27 @@
-================================================================================
-                    MAGTI VIDEO STORAGE STRUCTURE ANALYSIS
-================================================================================
-Server: 192.168.238.162 (App Server)
-Path: /storage/_Video/
-Date: 2025-12-11
+# Magti Video Storage Structure Analysis
 
-================================================================================
-                        CURRENT DIRECTORY STRUCTURE
-================================================================================
+**Server:** `192.168.238.162` (App Server)
+**Path:** `/storage/_Video/`
+**Date:** 2025-12-11
 
+---
+
+## Table of Contents
+
+- [Current Directory Structure](#current-directory-structure)
+- [Content Categorization](#content-categorization)
+- [Issues with Current Structure](#issues-with-current-structure)
+- [Recommended Directory Structure](#recommended-directory-structure)
+- [Structure Benefits](#structure-benefits)
+- [Migration Mapping](#migration-mapping)
+- [Implementation Notes](#implementation-notes)
+- [Recommended File Naming](#recommended-file-naming)
+
+---
+
+## Current Directory Structure
+
+```
 /storage/_Video/
 ├── HD/ (High Definition - 1080p)
 │   ├── ADS2/                          - HD Advertisements
@@ -39,46 +52,47 @@ Date: 2025-12-11
     ├── SHORTS 2020/                   - Short clips (2020)
     ├── SHORTS 2024/                   - Short clips (2024)
     └── TMP/                           - Temporary files
+```
 
+---
 
-================================================================================
-                    CONTENT CATEGORIZATION (CURRENT)
-================================================================================
+## Content Categorization
 
-MAIN CONTENT (Programs/Movies):
-  - HD/RUS2/                - Russian dubbed movies (HD)
-  - HD/RUS2 YYYY/           - Russian dubbed by year
-  - SD/GEO/                 - Georgian programs
-  - SD/ENG/                 - English programs
+### Main Content (Programs/Movies)
+- `HD/RUS2/` - Russian dubbed movies (HD)
+- `HD/RUS2 YYYY/` - Russian dubbed by year
+- `SD/GEO/` - Georgian programs
+- `SD/ENG/` - English programs
 
-SUPPORTING CONTENT (Exclude from playlist):
-  - *BUMP*                  - Channel bumpers
-  - *ANONSEBI               - Announcements/promos
-  - ADs/, ADS2/, REKLAMA/   - Advertisements
-  - SHORTS/                 - Short clips
-  - RES/                    - Resources
-  - TMP/                    - Temporary
-  - TEST/                   - Test files
+### Supporting Content (Exclude from playlist)
+- `*BUMP*` - Channel bumpers
+- `*ANONSEBI` - Announcements/promos
+- `ADs/`, `ADS2/`, `REKLAMA/` - Advertisements
+- `SHORTS/` - Short clips
+- `RES/` - Resources
+- `TMP/` - Temporary
+- `TEST/` - Test files
 
+---
 
-================================================================================
-                    ISSUES WITH CURRENT STRUCTURE
-================================================================================
+## Issues with Current Structure
 
-1. ❌ No channel separation - all channels share same directories
-2. ❌ Inconsistent naming (ADs vs ADS2, REKLAMA)
-3. ❌ RUS2 years scattered across multiple folders
-4. ❌ No structure for outsource companies (RUS2, NEO)
-5. ❌ Mix of content types in same level
-6. ❌ No clear separation between shared and channel-specific content
-7. ❌ Hard to manage permissions per channel
-8. ❌ Difficult to add new outsource providers
+| # | Issue |
+|---|-------|
+| 1 | ❌ No channel separation - all channels share same directories |
+| 2 | ❌ Inconsistent naming (ADs vs ADS2, REKLAMA) |
+| 3 | ❌ RUS2 years scattered across multiple folders |
+| 4 | ❌ No structure for outsource companies (RUS2, NEO) |
+| 5 | ❌ Mix of content types in same level |
+| 6 | ❌ No clear separation between shared and channel-specific content |
+| 7 | ❌ Hard to manage permissions per channel |
+| 8 | ❌ Difficult to add new outsource providers |
 
+---
 
-================================================================================
-              RECOMMENDED DIRECTORY STRUCTURE (NEW)
-================================================================================
+## Recommended Directory Structure
 
+```
 /storage/_Video/
 │
 ├── CHANNELS/                           # Channel-specific content
@@ -238,114 +252,114 @@ SUPPORTING CONTENT (Exclude from playlist):
     ├── 2023/
     ├── 2024/
     └── 2025/
+```
 
+---
 
-================================================================================
-                         STRUCTURE BENEFITS
-================================================================================
+## Structure Benefits
 
-✅ CHANNEL SEPARATION
-   - Each channel has its own directory
-   - Easy to manage permissions per channel
-   - Clear ownership and responsibility
+### ✅ Channel Separation
+- Each channel has its own directory
+- Easy to manage permissions per channel
+- Clear ownership and responsibility
 
-✅ SHARED RESOURCES
-   - Common content (ads, bumpers) in one place
-   - No duplication
-   - Centralized management
+### ✅ Shared Resources
+- Common content (ads, bumpers) in one place
+- No duplication
+- Centralized management
 
-✅ PROVIDER MANAGEMENT
-   - Clear workflow: Incoming → Processing → Ready → Archive
-   - Easy to add new providers
-   - Track delivery status
+### ✅ Provider Management
+- Clear workflow: **Incoming → Processing → Ready → Archive**
+- Easy to add new providers
+- Track delivery status
 
-✅ LANGUAGE ORGANIZATION
-   - Content organized by language
-   - Easy to find content for specific audience
-   - Supports multilingual channels
+### ✅ Language Organization
+- Content organized by language
+- Easy to find content for specific audience
+- Supports multilingual channels
 
-✅ FLEXIBILITY
-   - CUSTOM/ directories for future needs
-   - Scalable structure
-   - Easy to extend
+### ✅ Flexibility
+- `CUSTOM/` directories for future needs
+- Scalable structure
+- Easy to extend
 
-✅ WORKFLOW SUPPORT
-   - WORK/ directory for production pipeline
-   - Clear processing states
-   - Quality control integration
+### ✅ Workflow Support
+- `WORK/` directory for production pipeline
+- Clear processing states
+- Quality control integration
 
+---
 
-================================================================================
-                    MIGRATION MAPPING (OLD → NEW)
-================================================================================
+## Migration Mapping
 
-OLD LOCATION                          →  NEW LOCATION
-─────────────────────────────────────────────────────────────────────────────
-HD/RUS2/                              →  PROVIDERS/RUS2/Ready/HD/
-HD/RUS2 2025/                         →  PROVIDERS/RUS2/Ready/HD/2025/
-SD/GEO/                               →  LANGUAGES/Georgian/SD/Movies/
-SD/ENG/                               →  LANGUAGES/English/SD/Movies/
-HD/ADS2/                              →  COMMON/Ads/HD/Active/
-SD/ADs/                               →  COMMON/Ads/SD/Active/
-HD/HD BUMPERS/                        →  COMMON/Bumpers/[channel]/HD/
-SD/GEO BUMP/                          →  COMMON/Bumpers/[channel]/SD/
-HD/MOVIES TITREBI/                    →  COMMON/Titles/HD/
-SD/SHORTS 2024/                       →  COMMON/Shorts/SD/
-SD/TMP/                               →  WORK/Temp/
-HD/TEST/                              →  WORK/Temp/
+| Old Location | New Location |
+|-------------|--------------|
+| `HD/RUS2/` | `PROVIDERS/RUS2/Ready/HD/` |
+| `HD/RUS2 2025/` | `PROVIDERS/RUS2/Ready/HD/2025/` |
+| `SD/GEO/` | `LANGUAGES/Georgian/SD/Movies/` |
+| `SD/ENG/` | `LANGUAGES/English/SD/Movies/` |
+| `HD/ADS2/` | `COMMON/Ads/HD/Active/` |
+| `SD/ADs/` | `COMMON/Ads/SD/Active/` |
+| `HD/HD BUMPERS/` | `COMMON/Bumpers/[channel]/HD/` |
+| `SD/GEO BUMP/` | `COMMON/Bumpers/[channel]/SD/` |
+| `HD/MOVIES TITREBI/` | `COMMON/Titles/HD/` |
+| `SD/SHORTS 2024/` | `COMMON/Shorts/SD/` |
+| `SD/TMP/` | `WORK/Temp/` |
+| `HD/TEST/` | `WORK/Temp/` |
 
+---
 
-================================================================================
-                        IMPLEMENTATION NOTES
-================================================================================
+## Implementation Notes
 
-1. PHASED MIGRATION
-   - Migrate in phases to avoid disruption
-   - Start with new content, gradually move old
-   - Keep old structure until migration complete
+### 1. Phased Migration
+- Migrate in phases to avoid disruption
+- Start with new content, gradually move old
+- Keep old structure until migration complete
 
-2. SYMLINKS DURING TRANSITION
-   - Create symlinks from old to new locations
-   - Maintain backward compatibility
-   - Remove after full migration
+### 2. Symlinks During Transition
+- Create symlinks from old to new locations
+- Maintain backward compatibility
+- Remove after full migration
 
-3. AUTOMATION
-   - Update playout system paths
-   - Update parser to handle new structure
-   - Automate content organization
+### 3. Automation
+- Update playout system paths
+- Update parser to handle new structure
+- Automate content organization
 
-4. DOCUMENTATION
-   - Document file naming conventions
-   - Create content ingestion guidelines
-   - Train staff on new structure
+### 4. Documentation
+- Document file naming conventions
+- Create content ingestion guidelines
+- Train staff on new structure
 
-5. PERMISSIONS
-   - Set appropriate permissions per directory
-   - Restrict provider access to their folders
-   - Audit access regularly
+### 5. Permissions
+- Set appropriate permissions per directory
+- Restrict provider access to their folders
+- Audit access regularly
 
+---
 
-================================================================================
-                        RECOMMENDED FILE NAMING
-================================================================================
+## Recommended File Naming
 
-MOVIES:
-  [Title]_[Year]_[Language]_[Provider]_[FileCode].[ext]
-  Example: Godzilla_2014_RUS_RUS2_1049A.mov
+### Movies
+**Format:** `[Title]_[Year]_[Language]_[Provider]_[FileCode].[ext]`
 
-SERIES:
-  [Title]_S[NN]E[NN]_[Language]_[Provider]_[FileCode].[ext]
-  Example: Friends_S01E01_ENG_NEO_2345A.mov
+**Example:** `Godzilla_2014_RUS_RUS2_1049A.mov`
 
-ADS:
-  [Brand]_[Campaign]_[Duration]_[Language]_[ValidUntil].[ext]
-  Example: Magti_5G_30sec_GEO_2025-12-31.mov
+### Series
+**Format:** `[Title]_S[NN]E[NN]_[Language]_[Provider]_[FileCode].[ext]`
 
-BUMPERS:
-  [Channel]_[Type]_[Duration]_[Language].[ext]
-  Example: magti-hit_Ident_5sec_GEO.mov
+**Example:** `Friends_S01E01_ENG_NEO_2345A.mov`
 
+### Ads
+**Format:** `[Brand]_[Campaign]_[Duration]_[Language]_[ValidUntil].[ext]`
 
-================================================================================
-                              END OF DOCUMENT
-================================================================================
+**Example:** `Magti_5G_30sec_GEO_2025-12-31.mov`
+
+### Bumpers
+**Format:** `[Channel]_[Type]_[Duration]_[Language].[ext]`
+
+**Example:** `magti-hit_Ident_5sec_GEO.mov`
+
+---
+
+**Last Updated:** 2025-12-11
